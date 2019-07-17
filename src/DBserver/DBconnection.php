@@ -2,9 +2,9 @@
 class Dao
 {
     private $servername = "localhost";
-    private $dbname = "agro";
-    private $username = "root";
-    private $password = "1234";
+    private $dbname = "agroDB";
+    private $username = "agro";
+    private $password = "Tlqkf1q2w3e4r!";
     private $conn = null;
 
     public function __construct(){

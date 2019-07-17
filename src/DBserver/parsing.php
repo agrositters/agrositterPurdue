@@ -11,6 +11,6 @@
     
     //parsing
 
-    DBmanager.insert('default', objects);
+    DBmanager.insert('data', objects);
 
 ?>
