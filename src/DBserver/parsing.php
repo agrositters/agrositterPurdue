@@ -7,9 +7,9 @@
 
     $rawdata=$_POST['rawdata']
     
-    Attributes objects = new attributes(//받은거 ㄲ);
-    //parsing !!!!!!!
-
+    Attributes objects = new attributes($rawdata);
+    
+    //parsing
 
     DBmanager.insert('default', objects);
 
