@@ -4,11 +4,11 @@ CREATE TABLE data(
     temperature FLOAT,
     humidity FLOAT,
     date_time DATETIME,
-    longitude FLOAT,
-    latitude FLOAT,
+    longitude VARCHAR(100),
+    latitude VARCHAR(100),
     satlites INT,
     speed FLOAT,
-    
+
     PRIMARY KEY(id, date_time)
 );
 

@@ -11,6 +11,7 @@ class Row{
     private $id;
     // Temperature
     private $temperature;
+    private $humidity;
     // GPS
     private $date_time;
     private $longitude;
@@ -27,7 +28,7 @@ class Row{
     //     }
     // }
 
-    
+
 
     public function __construct($id, $temp, $time, $lon, $lat, $sat, $speed){
         $this->id = $id;
@@ -42,6 +43,6 @@ class Row{
     // public function getserver(){
     //     return $this->servername;
     // }
-} 
+}
 
 ?>
