@@ -6,6 +6,10 @@ void setup() {
 
   while (!Serial) continue;
 
+  
+}
+
+void loop() {
   StaticJsonBuffer<200> jsonBuffer;
 
   JsonObject& root = jsonBuffer.createObject();
@@ -35,8 +39,4 @@ void setup() {
   //     2.302038
   //   ]
   // }
-}
-
-void loop() {
-  // not used in this example
 }
