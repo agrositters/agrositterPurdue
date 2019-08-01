@@ -1,17 +1,4 @@
-#include <Adafruit_GPS.h>
 #include <ArduinoJson.h>
-// Test code for Adafruit GPS modules using MTK3329/MTK3339 driver
-//
-// This code shows how to listen to the GPS module in an interrupt
-// which allows the program to have more 'freedom' - just parse
-// when a new NMEA sentence is available! Then access data when
-// desired.
-//
-// Tested and works great with the Adafruit Ultimate GPS module
-// using MTK33x9 chipset
-//    ------> http://www.adafruit.com/products/746
-// Pick one up today at the Adafruit electronics shop
-// and help support open source hardware & software! -ada
 
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
@@ -19,11 +6,11 @@
 #define dht_apin A0 // Analog Pin sensor is connected to
  
 dht DHT;
+
 // Connect the GPS Power pin to 5V
 // Connect the GPS Ground pin to ground
 // Connect the GPS TX (transmit) pin to Digital 8
 // Connect the GPS RX (receive) pin to Digital 7
-
 // you can change the pin numbers to match your wiring:
 SoftwareSerial mySerial(7, 8);
 Adafruit_GPS GPS(&mySerial);
@@ -34,7 +21,6 @@ Adafruit_GPS GPS(&mySerial);
 
 void setup()
 {
-
   // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
   // also spit it out
   Serial.begin(115200);
@@ -63,9 +49,6 @@ void setup()
   delay(1000);
   // Ask for firmware version
   mySerial.println(PMTK_Q_RELEASE);
-
-
-  
 }
 
 uint32_t timer = millis();
@@ -73,13 +56,13 @@ void loop()                     // run over and over again
 {
   char c = GPS.read();
  
-  DHT.read11(dht_apin);
-  Serial.print("Current humidity = ");
-  Serial.print(DHT.humidity);
-  Serial.print("%  ");
-  Serial.print("temperature = ");
-  Serial.print(DHT.temperature); 
-  Serial.println("C  ");
+//  DHT.read11(dht_apin);
+//  Serial.print("Current humidity = ");
+//  Serial.print(DHT.humidity);
+//  Serial.print("%  ");
+//  Serial.print("temperature = ");
+//  Serial.print(DHT.temperature); 
+//  Serial.println("C  ");
 
   // if you want to debug, this is a good time to do it!
   if ((c) && (GPSECHO))
@@ -141,13 +124,13 @@ void loop()                     // run over and over again
     }
   }
 
-  Serial.println(date_time);
-  Serial.println();
+//  Serial.println(date_time);
+//  Serial.println();
   StaticJsonDocument<200> doc;
   
   doc["id"] = "test01";
-  doc["temperature"] = DHT.temperature;
-  doc["humidity"] = DHT.humidity;
+  doc["temperature"] = 1;//DHT.temperature;
+  doc["humidity"] = 2;//DHT.humidity;
   doc["date_time"] = date_time;
   doc["longitude"] = GPS.longitude;
   doc["latitude"] = GPS.latitude;
@@ -158,7 +141,5 @@ void loop()                     // run over and over again
   Serial.println();
   serializeJsonPretty(doc, Serial);
 
-
-  
   delay(3000);
 }
