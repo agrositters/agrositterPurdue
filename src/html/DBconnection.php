@@ -2,7 +2,7 @@
 class DBconnection
 {
     private $servername = "localhost";
-    private $dbname = "testdb";//"agrodb";
+    private $dbname = "agrodb";
     private $username = "agro";
     private $password = "Tlqkf1q2w3e4r!";
     private $conn = null;

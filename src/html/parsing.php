@@ -1,15 +1,29 @@
 <?php
     require_once("DBconnection.php");
-    // require_once("Row");
-    require_once("RowTest.php");
+    require_once("Row");
 
-    $value1=$_POST['test1'];
-    $value2=$_POST['test2'];
+    $json_data = "json"
+    if(isset($_POST['data'])) {
+    	$json_data = $_POST['data'];
+    }else{
+	     echo "no json data";
+    }
 
+    $arr_data = json_decode($json_data, true);
     $db = new DBconnection();
-    // $row = new Row();
-    $object = new RowTest($value1, $value2);
-    
+
+    $object = new Row(
+      $arr_data["id"],
+      $arr_data["temperature"],
+      $arr_data["humidity"],
+      $arr_data["date_time"],
+      $arr_data["latitude"],
+      $arr_data["latitude"],
+      $arr_data["satellites"],
+      $arr_data["speed"]
+    );
+
     //parsing
-    DBmanager.insert('data', $object);
+    $count = $db->insert('data', $object);
+
 ?>
