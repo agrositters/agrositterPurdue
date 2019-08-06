@@ -1,12 +1,11 @@
 #include <ArduinoJson.h>
-
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
 #include "dht.h"
 #define dht_apin A0 // Analog Pin sensor is connected to
 
 dht DHT;
-int highval = 8;
+int highval = 9;
 
 // Connect the GPS Power pin to 5V
 // Connect the GPS Ground pin to ground
@@ -15,7 +14,6 @@ int highval = 8;
 // you can change the pin numbers to match your wiring:
 SoftwareSerial mySerial(7, 8);
 Adafruit_GPS GPS(&mySerial);
-
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
 // Set to 'true' if you want to debug and listen to the raw GPS sentences
 #define GPSECHO  false
