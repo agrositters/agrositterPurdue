@@ -7,11 +7,8 @@
 dht DHT;
 int highval = 9;
 
-// Connect the GPS Power pin to 5V
-// Connect the GPS Ground pin to ground
 // Connect the GPS TX (transmit) pin to Digital 8
 // Connect the GPS RX (receive) pin to Digital 7
-// you can change the pin numbers to match your wiring:
 SoftwareSerial mySerial(7, 8);
 Adafruit_GPS GPS(&mySerial);
 // Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
@@ -39,6 +36,7 @@ void setup()
   mySerial.println(PMTK_Q_RELEASE);
 
   Serial.begin(4800);
+  Serial.println("C");
   delay(3);
   Serial.print("MW1AW\r\n");               //SET YOUR CALLSIGN HERE, HERE YOU SEE W1AW
   delay(10);                       
@@ -100,12 +98,29 @@ void loop()                     // run over and over again
   doc["satellites"] = (int)GPS.satellites;
   doc["gps_speed"] = GPS.speed;
 //  serializeJsonPretty(doc, Serial);
+  Serial.print("Location: ");
+  Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
+  Serial.print(", ");
+  Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
 
+  Serial.print("Speed (knots): "); Serial.println(GPS.speed);
+  Serial.print("Angle: "); Serial.println(GPS.angle);
+  Serial.print("Altitude: "); Serial.println(GPS.altitude);
+  Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
+  
+  Serial.println("C");
+  delay(10);
+  Serial.print("W");
+  Serial.println("transmit data");  
 // trasmit
   digitalWrite(highval, HIGH);
   Serial.print("!>");
   serializeJson(doc, Serial);
   Serial.print("\r\n");
-  delay(2000);
   digitalWrite(highval, LOW);
+  Serial.println("C");
+  delay(10);
+  Serial.print("W");
+  Serial.println("data transmitted");
+  delay(2000);
 }
