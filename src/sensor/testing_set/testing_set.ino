@@ -114,7 +114,7 @@ void loop()                     // run over and over again
   Serial.println("transmit data");  
 // trasmit
   digitalWrite(highval, HIGH);
-  Serial.print("!>");
+  Serial.print("!");
   serializeJson(doc, Serial);
   Serial.print("\r\n");
   digitalWrite(highval, LOW);
@@ -122,5 +122,5 @@ void loop()                     // run over and over again
   delay(10);
   Serial.print("W");
   Serial.println("data transmitted");
-  delay(2000);
+  delay(10);
 }
