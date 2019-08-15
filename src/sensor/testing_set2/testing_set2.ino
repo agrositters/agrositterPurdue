@@ -1,10 +1,10 @@
-
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
 #include "dht.h"
 #define dht_apin A0 // Analog Pin sensor is connected to
 
 dht DHT;
+uint32_t timer = millis();
 int highval = 9;
 int count = 0;
 
@@ -12,25 +12,20 @@ int count = 0;
 // Connect the GPS RX (receive) pin to Digital 7
 SoftwareSerial mySerial(7, 8);
 Adafruit_GPS GPS(&mySerial);
-// Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
-// Set to 'true' if you want to debug and listen to the raw GPS sentences
-#define GPSECHO  false
 
 void setup()
 {
-  // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
-  // also spit it out
+  // OPEN Serial port for GPS
   Serial.begin(115200);
   delay(5000);
-  // 9600 NMEA is the default baud rate for Adafruit MTK GPS's- some use 4800
+  
   GPS.begin(9600);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-
-  // Set the update rate
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+  // SET Update rate to 1 Hz
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   
   
   // Request updates on antenna status, comment out to keep quiet
-  GPS.sendCommand(PGCMD_ANTENNA);
+  GPS.sendCommand(PGCMD_ANTENNA); 
 
   delay(1000);
   // Ask for firmware version
@@ -39,31 +34,30 @@ void setup()
   Serial.begin(4800);
   Serial.println("C");
   delay(3);
-  Serial.print("MW1AW\r\n");               //SET YOUR CALLSIGN HERE, HERE YOU SEE W1AW
-  delay(10);                       
-  Serial.print("PWIDE1-1,WIDE2-1\r\n");    //SET DIGIPATH HERE
+  //SET CALLSIGN
+  Serial.print("MKD9NDI-1\r\n");               
+  delay(10);
+  //SET DIGIPATH                    
+  Serial.print("PWIDE1-1,WIDE2-1\r\n");    
   delay(10);
   pinMode(highval, OUTPUT);
   delay(10);
 }
 
-uint32_t timer = millis();
-void loop()                     // run over and over again
+void loop() 
 {
+
   char c = GPS.read(); 
   DHT.read11(dht_apin);
 
-  if (GPS.newNMEAreceived()) {
-    if (!GPS.parse(GPS.lastNMEA()))
-      return;
-  }
-
   if (timer > millis())
     timer = millis();
+
   String date_time;
 
+  // Make date_time string
   if (millis() - timer > 2000) {
-    timer = millis(); // reset the timer
+    timer = millis(); 
     
     date_time.concat("20");
     date_time.concat(GPS.year); date_time.concat('-');
@@ -89,10 +83,10 @@ void loop()                     // run over and over again
     date_time.concat(GPS.seconds);
   }
   
-//  StaticJsonDocument<200> doc;
   String data = "";
   count++;
 
+  // Make contents to put into sending packet
   data = data + "test"+(String)count + ", ";
   data = data + (String)DHT.temperature + ", ";
   data = data + (String)DHT.humidity + ", ";
@@ -102,28 +96,24 @@ void loop()                     // run over and over again
   int sate = (int)GPS.satellites;
   data = data + (String)sate + ", ";
   data = data + (String)GPS.speed;
-
-//  serializeJsonPretty(doc, Serial);
-//  Serial.print("Location: ");
-//  Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
-//  Serial.print(", ");
-//  Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
-//
-//  Serial.print("Speed (knots): "); Serial.println(GPS.speed);
-//  Serial.print("Angle: "); Serial.println(GPS.angle);
-//  Serial.print("Altitude: "); Serial.println(GPS.altitude);
-//  Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
   
+  // Trasmitting
   
-// trasmit
-  
+  // Pull up
   digitalWrite(highval, HIGH);
+  
+  // Send string
   Serial.print("!");
   Serial.print(data);
   Serial.print("\r\n");
-  delay(3000);
-  digitalWrite(highval, LOW);
   
+  //Wait 3s until send whole packet
+  delay(3000);
+  
+  // Pull down
+  digitalWrite(highval, LOW);
+
+  // Print LCD count 
   Serial.println("C");
   delay(10);
   Serial.print("W");
